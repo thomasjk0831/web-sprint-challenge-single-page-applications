@@ -1,16 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as yup from 'yup'
+import axios from 'axios'
+
 
 const formSchema = yup.object().shape({
-    name: yup.string().required("Name is a required field"),
+    name: yup.string().required("Name is a required field").min(2,"must be at least 2 chars"),
     size:yup.string(),
+    pepperoni: yup.boolean(),
+    anchovi: yup.boolean(),
+    greenpepper: yup.boolean(),
+    ham: yup.boolean(),
     instructions:yup.string()
 })
 
 
 function Form(){
-    const [form, setForm] = useState({name:"", size:"", instructions:""})
-    const [errorState, setErrorState] = useState({name:"", size:"", instructions:""})
+    const [orders, setOrders] = useState([])
+    const [form, setForm] = useState({name:"", 
+                                      size:"",
+                                      
+                                        pepperoni: false,
+                                        anchovi: false,
+                                        greenpepper: false,
+                                        ham: false,
+                                      
+                                      instructions:""})
+    const [errorState, setErrorState] = useState({name:"", 
+                                                  size:"",
+                                                  
+                                                    pepperoni: false,
+                                                    anchovi: false,
+                                                    greenpepper: false,
+                                                    ham: false,
+                                                    
+                                                instructions:""})
 
     function validate(e){
         yup
@@ -30,10 +53,34 @@ function Form(){
         setForm({...form, [e.target.name] : e.target.value})
     }
 
+    function onCheckboxChange(e){
+        setForm({...form, [e.target.name] : e.target.checked})
+    }
+
+    function submitHandler(e){
+        e.preventDefault()
+        axios.post('https://reqres.in/api/users', form)
+        .then(response => {
+          console.log(response.data)
+          setOrders([...orders, response.data ])
+          setForm({name:"", 
+          size:"",
+          
+            pepperoni: false,
+            anchovi: false,
+            greenpepper: false,
+            ham: false,
+          
+          instructions:""}
+          )
+        })
+        .catch(err => console.log(err))
+    }
+
     return(
         <div>
            Form Page
-           <form>
+           <form onSubmit={submitHandler}>
             <label htmlFor='name'> Name
             <input 
                   id='name' 
@@ -44,6 +91,11 @@ function Form(){
                   onChange={changeHandler}
                   />
                 </label> 
+            {
+                errorState.name.length>0 ? (
+                    <p>{errorState.name}</p>
+                ): null
+            }
             <label htmlFor="size">
               What is the size?
                <select
@@ -69,6 +121,44 @@ function Form(){
                   onChange={changeHandler}
                   />
                 </label> 
+            <div>
+            <label>pepperoni
+            <input
+            type="checkbox"
+            name='pepperoni'
+            checked={form.pepperoni}
+            onChange={onCheckboxChange}
+               />
+                </label> 
+            
+            <label>anchovi
+            <input
+            type="checkbox"
+            name='anchovi'
+            checked={form.anchovi}
+            onChange={onCheckboxChange}
+               />
+           </label>
+            <label>greenpepper
+            <input
+            type="checkbox"
+            name='greenpepper'
+            checked={form.greenpepper}
+            onChange={onCheckboxChange}
+               />
+           </label>
+            <label>ham
+            <input
+            type="checkbox"
+            name='ham'
+            checked={form.ham}
+            onChange={onCheckboxChange}
+               />
+           </label>
+            </div>
+            <button type="submit">submit order</button>
+         <pre>{JSON.stringify(orders, null, 2)}</pre>
+
            </form>
         </div>
     )

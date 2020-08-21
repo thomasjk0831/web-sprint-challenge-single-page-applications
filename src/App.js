@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import Home from './Home'
 import Form from './Form'
 
@@ -8,6 +8,13 @@ const App = () => {
   return (
     <>
       <h1>Lambda Eats</h1>
+      <Link to='/'>
+        <p>go to Home Page</p>
+      </Link>
+      <Link to='/pizza'>
+      <p>Order Now</p>
+      </Link>
+      
       <Route exact path='/'>
       <Home />
         </Route>
