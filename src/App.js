@@ -8,12 +8,15 @@ const App = () => {
   return (
     <>
       <h1>Lambda Eats</h1>
+      <nav>
       <Link to='/'>
-        <p>go to Home Page</p>
+        <p>Home Page</p>
       </Link>
       <Link to='/pizza'>
       <p>Order Now</p>
       </Link>
+      </nav>
+     
       
       <Route exact path='/'>
       <Home />

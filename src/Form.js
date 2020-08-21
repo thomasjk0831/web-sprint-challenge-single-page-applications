@@ -35,6 +35,8 @@ function Form(){
                                                     
                                                 instructions:""})
 
+     const [buttonDisabled, setButtonDisabled] = useState(true)
+
     function validate(e){
         yup
         .reach(formSchema, e.target.name)
@@ -77,9 +79,16 @@ function Form(){
         .catch(err => console.log(err))
     }
 
+    useEffect(()=> {
+        formSchema.isValid(form)
+        .then(valid => {
+          setButtonDisabled(!valid)
+        })
+      }, [form])
+
     return(
-        <div>
-           Form Page
+        
+           
            <form onSubmit={submitHandler}>
             <label htmlFor='name'> Name
             <input 
@@ -156,11 +165,12 @@ function Form(){
                />
            </label>
             </div>
-            <button type="submit">submit order</button>
+            <button disabled={buttonDisabled}
+            type="submit">submit order</button>
          <pre>{JSON.stringify(orders, null, 2)}</pre>
 
            </form>
-        </div>
+        
     )
 }
 
