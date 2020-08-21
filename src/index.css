@@ -26,6 +26,8 @@ form{
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 70%;
+  margin: 0 auto;
 }
 
 button{
@@ -34,4 +36,14 @@ button{
 
 label{
   margin: 10px;
+}
+
+label{
+  display:flex;
+  flex-direction: column;
+}
+
+ .toppings{
+   display: flex;
+  flex-direction: row;
 }

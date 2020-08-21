@@ -130,7 +130,8 @@ function Form(){
                   onChange={changeHandler}
                   />
                 </label> 
-            <div>
+                Select your toppings
+            <div className="toppings">
             <label>pepperoni
             <input
             type="checkbox"
